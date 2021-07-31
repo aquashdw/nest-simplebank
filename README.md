@@ -1,0 +1,2 @@
+# nest-simplebank
+Reimplementation of SimpleBank Service described in [Microservice in Action](https://www.manning.com/books/microservices-in-action?gclid=CjwKCAjwxo6IBhBKEiwAXSYBs2-bzVFxODyagVgeI_pCDjPB9tLfNkaz9m5fiVcGfvGURIO-5hjjFhoCUpkQAvD_BwE) in NestJS. (under construction)
