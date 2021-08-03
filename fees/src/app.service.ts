@@ -7,14 +7,14 @@ export class AppService {
   private readonly logger = new Logger(AppService.name);
 
   @RabbitSubscribe({
-    exchange: 'temp-exchange',
-    routingKey: '',
-    queue: `fanout-${randomUUID()}`,
+    exchange: 'temp-exchange-name',
+    routingKey: 'temp.routing.key',
+    queue: `${randomUUID()}`,
     queueOptions: {
       autoDelete: true,
     },
   })
   subscribeOrderPlaced() {
-    this.logger.log('TODO event order placed');
+    this.logger.log('TODO handle order placed');
   }
 }

@@ -8,7 +8,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
     RabbitMQModule.forRoot(RabbitMQModule, {
       exchanges: [
         {
-          name: 'nest.topic.exchange',
+          name: 'temp-exchange',
           type: 'topic',
         },
       ],

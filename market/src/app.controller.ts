@@ -13,7 +13,7 @@ export class AppController {
   }
 
   @EventPattern('order_created')
-  handleJob() {
+  consumeOrderCreated() {
     this.logger.log('TODO send order to market');
   }
 }
