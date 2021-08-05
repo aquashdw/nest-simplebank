@@ -1,10 +1,10 @@
 import { Controller, Get, Logger, Post } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AlertService } from './alert.service';
 
 @Controller()
-export class AppController {
-  private readonly logger = new Logger(AppController.name);
-  constructor(private readonly appService: AppService) {}
+export class AlertController {
+  private readonly logger = new Logger(AlertController.name);
+  constructor(private readonly appService: AlertService) {}
 
   @Get('health')
   healthCheck() {
