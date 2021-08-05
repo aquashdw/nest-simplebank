@@ -1,11 +1,11 @@
 import { Controller, Get, Logger } from '@nestjs/common';
-import { AppService } from './app.service';
+import { MarketService } from './market.service';
 import { EventPattern } from '@nestjs/microservices';
 
 @Controller()
-export class AppController {
-  private readonly logger = new Logger(AppController.name);
-  constructor(private readonly appService: AppService) {}
+export class MarketController {
+  private readonly logger = new Logger(MarketController.name);
+  constructor(private readonly appService: MarketService) {}
 
   @Get('health')
   healthCheck() {
