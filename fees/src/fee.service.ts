@@ -14,7 +14,7 @@ export class FeeService {
       autoDelete: true,
     },
   })
-  subscribeOrderPlaced() {
-    this.logger.log('TODO handle order placed');
+  subscribeOrderPlaced(eventMessage: any) {
+    // TODO
   }
 }

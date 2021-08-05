@@ -7,7 +7,7 @@ export class FeeController {
   constructor(private readonly appService: FeeService) {}
 
   @Get('/health')
-  healthCheck() {
-    this.logger.log('TODO health check');
+  getHealthCheck() {
+    // TODO
   }
 }
