@@ -7,12 +7,12 @@ export class AlertController {
   constructor(private readonly appService: AlertService) {}
 
   @Get('health')
-  healthCheck() {
-    this.logger.log('TODO health check');
+  getHealthCheck() {
+    // TODO
   }
 
   @Post('alert')
-  createAlert() {
-    this.logger.log('TODO create alert');
+  postCreateAlert() {
+    // TODO
   }
 }
