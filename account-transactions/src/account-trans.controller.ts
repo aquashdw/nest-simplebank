@@ -7,12 +7,12 @@ export class AccountTransController {
   constructor(private readonly appService: AccountTransService) {}
 
   @Get('health')
-  healthCheck() {
-    this.logger.log('TODO health check');
+  getHealthCheck() {
+    // TODO
   }
 
   @Post('request-reservation')
-  requestReservation() {
-    this.logger.log('TODO request reservation');
+  postRequestReservation() {
+    // TODO
   }
 }
