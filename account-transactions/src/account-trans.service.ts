@@ -6,7 +6,7 @@ import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 export class AccountTransService {
   private readonly logger = new Logger(AccountTransService.name);
 
-  reserveTransaction() {
+  reserveTransaction(transactionArgs: any) {
     // TODO
   }
 
@@ -18,11 +18,11 @@ export class AccountTransService {
       autoDelete: true,
     },
   })
-  subscribeOrderPlaced() {
+  subscribeOrderPlaced(eventMessage: any) {
     // TODO
   }
 
-  executeTransaction() {
+  executeTransaction(transactionArgs: any) {
     // TODO
   }
 }

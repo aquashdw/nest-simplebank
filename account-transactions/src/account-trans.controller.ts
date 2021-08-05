@@ -12,7 +12,7 @@ export class AccountTransController {
   }
 
   @Post('request-reservation')
-  postRequestReservation() {
+  postRequestReservation(dto: any) {
     // TODO
   }
 }
