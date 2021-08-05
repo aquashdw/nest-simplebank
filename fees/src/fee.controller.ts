@@ -6,7 +6,7 @@ export class FeeController {
   private readonly logger = new Logger(FeeController.name);
   constructor(private readonly appService: FeeService) {}
 
-  @Get('/health')
+  @Get('health')
   getHealthCheck() {
     // TODO
   }
