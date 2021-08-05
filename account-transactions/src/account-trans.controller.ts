@@ -1,10 +1,10 @@
 import { Controller, Get, Logger, Post } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AccountTransService } from './account-trans.service';
 
 @Controller()
-export class AppController {
-  private readonly logger = new Logger(AppController.name);
-  constructor(private readonly appService: AppService) {}
+export class AccountTransController {
+  private readonly logger = new Logger(AccountTransController.name);
+  constructor(private readonly appService: AccountTransService) {}
 
   @Get('health')
   healthCheck() {
