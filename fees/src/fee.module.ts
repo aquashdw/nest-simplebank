@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { FeeController } from './fee.controller';
+import { FeeService } from './fee.service';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 
 @Module({
@@ -18,7 +18,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
       },
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [FeeController],
+  providers: [FeeService],
 })
-export class AppModule {}
+export class FeeModule {}

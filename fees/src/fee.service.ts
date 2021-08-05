@@ -3,8 +3,8 @@ import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { randomUUID } from 'crypto';
 
 @Injectable()
-export class AppService {
-  private readonly logger = new Logger(AppService.name);
+export class FeeService {
+  private readonly logger = new Logger(FeeService.name);
 
   @RabbitSubscribe({
     exchange: 'temp-exchange-name',
