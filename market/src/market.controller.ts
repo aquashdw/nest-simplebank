@@ -7,13 +7,13 @@ export class MarketController {
   private readonly logger = new Logger(MarketController.name);
   constructor(private readonly appService: MarketService) {}
 
-  @Get('health')
-  healthCheck() {
-    this.logger.log('TODO health check');
+  @EventPattern('order_created')
+  consumeOrderCreated(dto: any) {
+    // TODO
   }
 
-  @EventPattern('order_created')
-  consumeOrderCreated() {
-    this.logger.log('TODO send order to market');
+  @Get('health')
+  getHealthCheck() {
+    // TODO
   }
 }
