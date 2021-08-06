@@ -1,8 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class GatewayService {
-  getHello(): string {
-    return 'Hello World!';
+  private readonly logger = new Logger();
+
+  relayRequestReservation(dto: any) {
+    // TODO
+  }
+
+  relaySellShares() {
+    // TODO
+  }
+
+  relayCreateAlert() {
+    // TODO
   }
 }

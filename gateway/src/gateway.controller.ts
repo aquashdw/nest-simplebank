@@ -4,21 +4,21 @@ import { GatewayService } from './gateway.service';
 @Controller()
 export class GatewayController {
   private readonly logger = new Logger(GatewayController.name);
-  constructor(private readonly appService: GatewayService) {}
+  constructor(private readonly gatewayService: GatewayService) {}
 
   @Post('request-reservation')
   postRequestReservation(dto: any) {
-    // TODO
+    return this.gatewayService.relayRequestReservation(dto);
   }
 
   @Post('sell-shares')
-  sellShares() {
-    // TODO
+  postSellShares() {
+    return this.gatewayService.relaySellShares();
   }
 
   @Post('alert')
   postCreateAlert() {
-    // TODO
+    return this.gatewayService.relayCreateAlert();
   }
 
   @Get('health')
