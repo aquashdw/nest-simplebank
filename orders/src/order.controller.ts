@@ -8,11 +8,11 @@ export class OrderController {
 
   @Get('health')
   healthCheck() {
-    this.logger.log('TODO health check');
+    // TODO
   }
 
   @Post('sell-shares')
-  sellShares() {
-    this.logger.log('TODO sell shares');
+  postSellShares(dto: any) {
+    // TODO
   }
 }

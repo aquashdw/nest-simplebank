@@ -11,14 +11,11 @@ export class OrderService {
   ) {}
 
   requestReservation() {
-    this.logger.log(
-      'TODO send request-reservaton request -> account-transactions',
-    );
+    // TODO send request to account-trans
   }
 
   produceOrderCreate() {
-    this.logger.log('TODO create order_created job');
-    // TODO this.jobQueueClient.emit();
+    // TODO this.jobQueueClient.emit(); produce job for market
   }
 
   @RabbitSubscribe({
@@ -30,6 +27,6 @@ export class OrderService {
     },
   })
   subscribeOrderPlaced() {
-    this.logger.log('TODO handle order placed');
+    // TODO handle order placed
   }
 }
