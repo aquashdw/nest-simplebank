@@ -1,2 +1,2 @@
 # API Gateway 
-May or may not use this, may use aws api gateway
+relay outer requests (from clients) to micro services

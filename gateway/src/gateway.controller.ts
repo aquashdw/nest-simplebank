@@ -1,5 +1,10 @@
 import { Controller, Get, Logger, Post } from '@nestjs/common';
 import { GatewayService } from './gateway.service';
+import {
+  CreateAlertDto,
+  GateResponseDto,
+  SellSharesDto,
+} from '@simplebank/shared-objects/dist';
 
 @Controller()
 export class GatewayController {
@@ -7,13 +12,13 @@ export class GatewayController {
   constructor(private readonly gatewayService: GatewayService) {}
 
   @Post('sell-shares')
-  postSellShares() {
-    return this.gatewayService.relaySellShares();
+  postSellShares(dto: SellSharesDto): GateResponseDto {
+    return this.gatewayService.relaySellShares(dto);
   }
 
   @Post('alert')
-  postCreateAlert() {
-    return this.gatewayService.relayCreateAlert();
+  postCreateAlert(dto: CreateAlertDto): GateResponseDto {
+    return this.gatewayService.relayCreateAlert(dto);
   }
 
   @Get('health')
