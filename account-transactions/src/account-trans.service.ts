@@ -1,13 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import {
+  GateResponseDto,
+  OrderPlacedEvent,
+  RequestReservationDto,
+} from '@simplebank/shared-objects/dist';
 
 @Injectable()
 export class AccountTransService {
   private readonly logger = new Logger(AccountTransService.name);
 
-  reserveTransaction(transactionArgs: any) {
+  reserveTransaction(dto: RequestReservationDto): GateResponseDto {
     // TODO
+    return null;
   }
 
   @RabbitSubscribe({
@@ -18,11 +24,11 @@ export class AccountTransService {
       autoDelete: true,
     },
   })
-  subscribeOrderPlaced(eventMessage: any) {
-    // TODO
+  subscribeOrderPlaced(event: OrderPlacedEvent) {
+    // TODO run execute transaction
   }
 
   executeTransaction(transactionArgs: any) {
-    // TODO
+    // TODO actual database update
   }
 }

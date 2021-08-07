@@ -1,5 +1,9 @@
 import { Controller, Get, Logger, Post } from '@nestjs/common';
 import { AccountTransService } from './account-trans.service';
+import {
+  GateResponseDto,
+  RequestReservationDto,
+} from '@simplebank/shared-objects/dist';
 
 @Controller()
 export class AccountTransController {
@@ -12,7 +16,7 @@ export class AccountTransController {
   }
 
   @Post('request-reservation')
-  postRequestReservation(dto: any) {
-    // TODO
+  postRequestReservation(dto: RequestReservationDto): GateResponseDto {
+    return this.appService.reserveTransaction(dto);
   }
 }
