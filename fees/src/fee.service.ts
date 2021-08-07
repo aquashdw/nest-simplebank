@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { randomUUID } from 'crypto';
+import { OrderPlacedEvent } from '@simplebank/shared-objects/dist';
 
 @Injectable()
 export class FeeService {
@@ -14,7 +15,7 @@ export class FeeService {
       autoDelete: true,
     },
   })
-  subscribeOrderPlaced(eventMessage: any) {
+  subscribeOrderPlaced(event: OrderPlacedEvent) {
     // TODO
   }
 }
