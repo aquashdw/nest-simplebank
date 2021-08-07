@@ -1,5 +1,9 @@
 import { Controller, Get, Logger, Post } from '@nestjs/common';
 import { AlertService } from './alert.service';
+import {
+  CreateAlertDto,
+  GateResponseDto,
+} from '@simplebank/shared-objects/dist';
 
 @Controller()
 export class AlertController {
@@ -12,7 +16,7 @@ export class AlertController {
   }
 
   @Post('alert')
-  postCreateAlert() {
-    // TODO
+  postCreateAlert(dto: CreateAlertDto): GateResponseDto {
+    return this.appService.createAlert(dto);
   }
 }
