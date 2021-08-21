@@ -1,7 +1,10 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get, Logger, Post } from '@nestjs/common';
 import { MarketService } from './market.service';
 import { EventPattern } from '@nestjs/microservices';
-import { OrderCreatedJob } from '@simplebank/shared-objects/dist';
+import {
+  OrderCreatedJob,
+  OrderPlacedEvent,
+} from '@simplebank/shared-objects/dist';
 
 @Controller()
 export class MarketController {
@@ -11,6 +14,11 @@ export class MarketController {
   @EventPattern('order_created')
   consumeOrderCreated(job: OrderCreatedJob) {
     this.appService.placeOrderToMarket(job);
+  }
+
+  @Post('order-result')
+  postOrderResult(event: OrderPlacedEvent) {
+    this.appService.publishOrderPlaced(event);
   }
 
   @Get('health')

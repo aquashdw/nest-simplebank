@@ -8,7 +8,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://guest:guest@localhost:5672/'],
-      queue: 'nest-job-queue',
+      queue: 'simplebank.jobs.place-order',
       queueOptions: {
         durable: false,
       },

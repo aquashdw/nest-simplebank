@@ -10,11 +10,23 @@ export class MarketService {
   private readonly logger = new Logger(MarketService.name);
   constructor(private readonly amqpConnection: AmqpConnection) {}
 
+  // 4.
   placeOrderToMarket(job: OrderCreatedJob) {
-    // TODO
+    // TODO simulate order created
+    // thread.sleep(5); 5.
+    // this.publishOrderPlaced({
+    //   requestId: job.requestId,
+    //   status: 200,
+    //   message: "success";
+    // });
   }
 
+  // 6.
   async publishOrderPlaced(event: OrderPlacedEvent) {
-    // TODO await this.amqpConnection.publish('nest.topic.exchange', routingKey, JSON.stringify(dto));
+    await this.amqpConnection.publish(
+      'simplebank.topic',
+      'simplebank.market.order.created',
+      JSON.stringify(event),
+    );
   }
 }
