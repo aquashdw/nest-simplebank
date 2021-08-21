@@ -3,6 +3,6 @@ import { AlertModule } from './alert.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AlertModule);
-  await app.listen(3000);
+  await app.listen(3005);
 }
 bootstrap();
