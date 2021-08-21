@@ -23,6 +23,6 @@ export class MarketController {
 
   @Get('health')
   getHealthCheck() {
-    // TODO
+    return 'Market Service Homepage';
   }
 }
