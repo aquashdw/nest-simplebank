@@ -11,6 +11,7 @@ import { TransactionsEntity } from './entities/transactions.entity';
 import { Repository } from 'typeorm';
 import { AccountEntity } from './entities/account.entity';
 import { SharesEntity } from './entities/shares.entity';
+import { AccountSharesEntity } from './entities/account.shares.entity';
 
 @Injectable()
 export class AccountTransService {
@@ -22,6 +23,8 @@ export class AccountTransService {
     private accountRepository: Repository<AccountEntity>,
     @InjectRepository(SharesEntity)
     private sharesRepository: Repository<SharesEntity>,
+    @InjectRepository(AccountSharesEntity)
+    private accountSharesRepository: Repository<AccountSharesEntity>,
   ) {}
 
   async reserveTransaction(
@@ -52,14 +55,46 @@ export class AccountTransService {
 
   @RabbitSubscribe({
     exchange: 'simplebank.topic',
-    routingKey: 'simplebank.market.#',
+    routingKey: 'simplebank.market.order.placed',
     queue: `account-trans-${randomUUID()}`,
     queueOptions: {
       autoDelete: true,
     },
   })
-  subscribeOrderPlaced(event: OrderPlacedEvent) {
-    // TODO run execute transaction
+  async subscribeOrderPlaced(event: OrderPlacedEvent) {
+    const transaction = await this.transactionsRepository
+      .findOneOrFail({
+        requestId: event.requestId,
+      })
+      .catch((reason) => {
+        this.logger.error(reason);
+        this.logger.error(
+          `data inconsistency: cannot find request id: ${event.requestId}`,
+        );
+        throw new NotFoundException('');
+      });
+    transaction.status = event.status;
+
+    if (event.status == 'success') {
+      const account = transaction.account;
+      const shares = transaction.shares;
+      account.balance -= transaction.diff * shares.price;
+      const accountShares = await this.accountSharesRepository.findOne({
+        account: account,
+        shares: shares,
+      });
+      if (accountShares == undefined) {
+        await this.accountSharesRepository.insert({
+          account: account,
+          shares: shares,
+          count: transaction.diff,
+        });
+      } else {
+        accountShares.count -= transaction.diff;
+        await this.accountSharesRepository.save(accountShares);
+      }
+    }
+    await this.transactionsRepository.save(transaction);
   }
 
   executeTransaction(transactionArgs: any) {
