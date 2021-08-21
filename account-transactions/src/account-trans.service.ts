@@ -17,7 +17,7 @@ export class AccountTransService {
   }
 
   @RabbitSubscribe({
-    exchange: 'temp-exchange-name',
+    exchange: 'temp-exchange',
     routingKey: 'temp.routing.key',
     queue: `${randomUUID()}`,
     queueOptions: {
