@@ -20,5 +20,5 @@ export class TransactionsEntity {
   diff: number;
 
   @Column()
-  success: boolean;
+  status: string;
 }

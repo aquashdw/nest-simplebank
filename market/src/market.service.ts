@@ -25,7 +25,7 @@ export class MarketService {
   async publishOrderPlaced(event: OrderPlacedEvent) {
     await this.amqpConnection.publish(
       'simplebank.topic',
-      'simplebank.market.order.created',
+      'simplebank.market.order.placed',
       JSON.stringify(event),
     );
   }

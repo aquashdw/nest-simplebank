@@ -24,7 +24,7 @@ import { TransactionsEntity } from './entities/transactions.entity';
     RabbitMQModule.forRoot(RabbitMQModule, {
       exchanges: [
         {
-          name: 'temp-exchange',
+          name: 'simplebank.topic',
           type: 'topic',
         },
       ],

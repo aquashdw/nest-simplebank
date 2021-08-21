@@ -12,11 +12,13 @@ export class AccountTransController {
 
   @Get('health')
   getHealthCheck() {
-    // TODO
+    return 'account transaction homepage';
   }
 
   @Post('request-reservation')
-  postRequestReservation(dto: RequestReservationDto): GateResponseDto {
+  async postRequestReservation(
+    dto: RequestReservationDto,
+  ): Promise<GateResponseDto> {
     return this.appService.reserveTransaction(dto);
   }
 }
