@@ -1,0 +1,14 @@
+FROM node:16-alpine
+WORKDIR /app
+
+RUN mkdir market shared
+
+COPY shared shared
+COPY market market
+
+RUN cd shared && npm install
+RUN cd ..
+RUN cd market && npm install && npm run build  
+
+WORKDIR /app/market
+CMD ["npm", "start"]
