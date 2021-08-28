@@ -8,6 +8,6 @@ export class FeeController {
 
   @Get('health')
   getHealthCheck() {
-    // TODO
+    return 'fee service homepage';
   }
 }
