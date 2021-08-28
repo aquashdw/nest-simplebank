@@ -1,10 +1,8 @@
-import { Controller, Get, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { MarketService } from './market.service';
 import { EventPattern } from '@nestjs/microservices';
-import {
-  OrderCreatedJob,
-  OrderPlacedEvent,
-} from '@simplebank/shared-objects/dist';
+import { OrderCreatedJob } from '@simplebank/shared-objects/dist';
+import { OrderPlacedDto } from './dto/order.placed.dto';
 
 @Controller()
 export class MarketController {
@@ -17,8 +15,8 @@ export class MarketController {
   }
 
   @Post('order-result')
-  postOrderResult(event: OrderPlacedEvent) {
-    this.appService.publishOrderPlaced(event);
+  postOrderResult(@Body() dto: OrderPlacedDto) {
+    this.appService.publishOrderPlaced(dto);
   }
 
   @Get('health')
