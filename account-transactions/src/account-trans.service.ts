@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import {
+  FeeOccurrenceEvent,
   GateResponseDto,
   OrderPlacedEvent,
   RequestReservationDto,
@@ -12,6 +13,7 @@ import { Repository } from 'typeorm';
 import { AccountEntity } from './entities/account.entity';
 import { SharesEntity } from './entities/shares.entity';
 import { AccountSharesEntity } from './entities/account.shares.entity';
+import { AccountBalanceLogEntity } from './entities/account.balance.log.entity';
 
 @Injectable()
 export class AccountTransService {
@@ -25,6 +27,8 @@ export class AccountTransService {
     private sharesRepository: Repository<SharesEntity>,
     @InjectRepository(AccountSharesEntity)
     private accountSharesRepository: Repository<AccountSharesEntity>,
+    @InjectRepository(AccountBalanceLogEntity)
+    private balanceLogRepository: Repository<AccountBalanceLogEntity>,
   ) {}
 
   async reserveTransaction(
@@ -56,7 +60,7 @@ export class AccountTransService {
   @RabbitSubscribe({
     exchange: 'simplebank.topic',
     routingKey: 'simplebank.market.order.placed',
-    queue: `account-trans-${randomUUID()}`,
+    queue: `account-trans-market-${randomUUID()}`,
     queueOptions: {
       autoDelete: true,
     },
@@ -90,14 +94,37 @@ export class AccountTransService {
           count: transaction.diff,
         });
       } else {
-        accountShares.count -= transaction.diff;
+        accountShares.count += transaction.diff;
         await this.accountSharesRepository.save(accountShares);
       }
     }
     await this.transactionsRepository.save(transaction);
   }
 
-  executeTransaction(transactionArgs: any) {
-    // TODO actual database update
+  @RabbitSubscribe({
+    exchange: 'simplebank.topic',
+    routingKey: 'simplebank.fee.created',
+    queue: `account-trans-fees-${randomUUID()}`,
+    queueOptions: {
+      autoDelete: true,
+    },
+  })
+  async applyFee(eventFee: FeeOccurrenceEvent) {
+    const logEntity = this.balanceLogRepository.create();
+    logEntity.requestId = eventFee.requestId;
+    logEntity.account = await this.accountRepository
+      .findOneOrFail(eventFee.accountId)
+      .catch((reason) => {
+        this.logger.error(reason.toString());
+        throw new NotFoundException(
+          `account with id: ${eventFee.accountId} not found`,
+        );
+      });
+    logEntity.log = eventFee.log;
+    logEntity.amount = eventFee.amount;
+    const savedLogEntity = await this.balanceLogRepository.save(logEntity);
+    const account = savedLogEntity.account;
+    account.balance -= eventFee.amount;
+    await this.accountRepository.save(account);
   }
 }

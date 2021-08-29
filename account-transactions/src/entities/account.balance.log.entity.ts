@@ -7,6 +7,9 @@ export class AccountBalanceLogEntity {
   id: number;
 
   @Column()
+  requestId: string;
+
+  @Column()
   log: string;
 
   @Column()

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { AccountBalanceLogEntity } from './account.balance.log.entity';
 
 @Entity({ name: 'account' })
 export class AccountEntity {
@@ -10,4 +11,7 @@ export class AccountEntity {
 
   @Column()
   balance: number;
+
+  @OneToMany(() => AccountBalanceLogEntity, (balanceLog) => balanceLog.id)
+  logs: AccountBalanceLogEntity[];
 }
