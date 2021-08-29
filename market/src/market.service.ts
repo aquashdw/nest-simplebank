@@ -20,7 +20,7 @@ export class MarketService {
 
   // 4.
   async placeOrderToMarket(job: OrderCreatedJob) {
-    const newOrder = new OrderPlacedEntity();
+    const newOrder = this.orderPlacedRepository.create();
     newOrder.requestId = job.requestId;
     newOrder.shareId = job.shareId;
     newOrder.accountId = job.accountId;
