@@ -1,5 +1,6 @@
 export class FeeOccurrenceEvent {
-  account: number;
+  requestId: string;
+  accountId: number;
   log: string;
   amount: number;
 }

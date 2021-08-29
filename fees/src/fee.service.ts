@@ -24,7 +24,8 @@ export class FeeService {
     const feeRate = this.feePerShare[eventOrder.shareId % 3];
     const fee = (feeRate * eventOrder.sellCount) / 10;
     const eventFee = new FeeOccurrenceEvent();
-    eventFee.account = eventOrder.accountId;
+    eventFee.requestId = eventOrder.requestId;
+    eventFee.accountId = eventOrder.accountId;
     eventFee.log = `fee for event: ${eventOrder.requestId}, share ${eventOrder.shareId}, rate: ${feeRate}, total: ${fee}`;
     eventFee.amount = fee;
 
