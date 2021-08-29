@@ -15,7 +15,7 @@ export class FeeService {
   @RabbitSubscribe({
     exchange: 'simplebank.topic',
     routingKey: 'simplebank.market.order.placed',
-    queue: `${randomUUID()}`,
+    queue: `fees-market-${randomUUID()}`,
     queueOptions: {
       autoDelete: true,
     },
