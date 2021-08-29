@@ -6,3 +6,4 @@ export * from './dto/gate-response.dto';
 export * from './job/order-created.job';
 
 export * from './event/order-placed.event';
+export * from './event/fee-occurrence.event';
