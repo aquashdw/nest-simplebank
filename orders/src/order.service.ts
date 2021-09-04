@@ -6,24 +6,47 @@ import {
   GateResponseDto,
   SellSharesDto,
 } from '@simplebank/shared-objects/dist';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class OrderService {
   private readonly logger = new Logger(OrderService.name);
   constructor(
-    @Inject('nest_producer') private readonly jobQueueClient: ClientProxy,
+    @Inject('nest_producer')
+    private readonly jobQueueClient: ClientProxy,
+    private readonly httpService: HttpService,
   ) {}
 
-  sellShares(dto: SellSharesDto): GateResponseDto {
+  async sellShares(dto: SellSharesDto): Promise<GateResponseDto> {
     const requestId = randomUUID().toString();
-    this.requestReservation(dto, requestId);
+    const orderResponse = new GateResponseDto();
+    const reserveResponse = await this.requestReservation(dto, requestId);
+    if (reserveResponse.status != 'success') {
+      orderResponse.status = reserveResponse.status;
+      orderResponse.message = `[from=account-transactions] ${reserveResponse.message}`;
+
+      return orderResponse;
+    }
     this.produceOrderCreate(dto, requestId);
     // TODO
-    return null;
+    return orderResponse;
   }
 
-  requestReservation(dto: SellSharesDto, requestId: string) {
-    // TODO send request to account-trans
+  async requestReservation(
+    dto: SellSharesDto,
+    requestId: string,
+  ): Promise<GateResponseDto> {
+    return (
+      await lastValueFrom(
+        this.httpService.post('some_url_to_at', {
+          requestId: `req-sell-${requestId}`,
+          accountId: dto.accountId,
+          shareId: dto.shareId,
+          sellCount: dto.sellCount,
+        }),
+      )
+    ).data;
   }
 
   produceOrderCreate(dto: SellSharesDto, requestId: string) {
@@ -31,14 +54,14 @@ export class OrderService {
   }
 
   @RabbitSubscribe({
-    exchange: 'temp-exchange-name',
-    routingKey: 'temp.routing.key',
-    queue: `${randomUUID()}`,
+    exchange: 'simplebank.topic',
+    routingKey: 'simplebank.market.order.placed',
+    queue: `orders-market-${randomUUID()}`,
     queueOptions: {
       autoDelete: true,
     },
   })
   subscribeOrderPlaced() {
-    // TODO handle order placed
+    // TODO send request to alert service
   }
 }

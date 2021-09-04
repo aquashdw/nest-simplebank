@@ -11,7 +11,7 @@ export class OrderController {
   constructor(private readonly appService: OrderService) {}
 
   @Post('sell-shares')
-  postSellShares(dto: SellSharesDto): GateResponseDto {
+  async postSellShares(dto: SellSharesDto): Promise<GateResponseDto> {
     return this.appService.sellShares(dto);
   }
 

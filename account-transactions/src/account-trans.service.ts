@@ -52,7 +52,7 @@ export class AccountTransService {
       status: 'pending',
     });
     return {
-      status: 'sucees',
+      status: 'success',
       message: 'transaction pending',
     };
   }

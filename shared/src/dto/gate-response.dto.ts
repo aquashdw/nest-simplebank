@@ -1,4 +1,4 @@
-export interface GateResponseDto {
+export class GateResponseDto {
   status: string;
   message: string;
 }
