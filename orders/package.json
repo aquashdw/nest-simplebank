@@ -28,6 +28,8 @@
     "@nestjs/microservices": "^8.0.5",
     "@nestjs/platform-express": "^8.0.0",
     "@simplebank/shared-objects": "file:../shared",
+    "amqp-connection-manager": "^3.6.0",
+    "amqplib": "^0.7.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"

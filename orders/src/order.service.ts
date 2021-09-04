@@ -4,6 +4,7 @@ import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { randomUUID } from 'crypto';
 import {
   GateResponseDto,
+  OrderCreatedJob,
   SellSharesDto,
 } from '@simplebank/shared-objects/dist';
 import { HttpService } from '@nestjs/axios';
@@ -21,15 +22,32 @@ export class OrderService {
   async sellShares(dto: SellSharesDto): Promise<GateResponseDto> {
     const requestId = randomUUID().toString();
     const orderResponse = new GateResponseDto();
-    const reserveResponse = await this.requestReservation(dto, requestId);
-    if (reserveResponse.status != 'success') {
-      orderResponse.status = reserveResponse.status;
-      orderResponse.message = `[from=account-transactions] ${reserveResponse.message}`;
+    try {
+      const reserveResponse = await this.requestReservation(dto, requestId);
+      if (reserveResponse.status != 'success') {
+        orderResponse.status = reserveResponse.status;
+        orderResponse.message = `[from=account-transactions] ${reserveResponse.message}`;
 
+        return orderResponse;
+      }
+    } catch (e) {
+      this.logger.error(e);
+      orderResponse.status = 'failed';
+      orderResponse.message =
+        '[from=account-transaction] could not finish request to account-transactions';
       return orderResponse;
     }
-    this.produceOrderCreate(dto, requestId);
-    // TODO
+
+    try {
+      this.produceOrderCreate(dto, requestId);
+    } catch (e) {
+      this.logger.error(e);
+      orderResponse.status = 'failed';
+      orderResponse.message = '[from=market] could not finish producing job';
+      return orderResponse;
+    }
+    orderResponse.status = 'success';
+    orderResponse.message = 'success';
     return orderResponse;
   }
 
@@ -50,7 +68,13 @@ export class OrderService {
   }
 
   produceOrderCreate(dto: SellSharesDto, requestId: string) {
-    // TODO this.jobQueueClient.emit(); produce job for market
+    const job: OrderCreatedJob = {
+      requestId: requestId,
+      accountId: dto.accountId,
+      shareId: dto.shareId,
+      sellCount: dto.sellCount,
+    };
+    this.jobQueueClient.emit<OrderCreatedJob>('order_created', job);
   }
 
   @RabbitSubscribe({
