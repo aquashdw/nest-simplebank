@@ -5,6 +5,7 @@ import { randomUUID } from 'crypto';
 import {
   GateResponseDto,
   OrderCreatedJob,
+  OrderPlacedEvent,
   SellSharesDto,
 } from '@simplebank/shared-objects/dist';
 import { HttpService } from '@nestjs/axios';
@@ -85,7 +86,8 @@ export class OrderService {
       autoDelete: true,
     },
   })
-  subscribeOrderPlaced() {
+  subscribeOrderPlaced(event: OrderPlacedEvent) {
+    this.logger.log(`assume alert has been sent to client: ${event}`);
     // TODO send request to alert service
   }
 }
