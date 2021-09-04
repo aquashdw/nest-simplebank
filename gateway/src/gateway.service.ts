@@ -4,18 +4,33 @@ import {
   GateResponseDto,
   SellSharesDto,
 } from '@simplebank/shared-objects/dist';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class GatewayService {
   private readonly logger = new Logger();
+  constructor(private httpService: HttpService) {}
 
-  relaySellShares(dto: SellSharesDto): GateResponseDto {
-    // TODO send sales to orders service
-    return null;
+  async relaySellShares(dto: SellSharesDto): Promise<GateResponseDto> {
+    const httpResponse = await lastValueFrom(
+      this.httpService.post('some_url_to_orders', dto),
+    );
+    const responseStatus = httpResponse.status;
+    // TODO switch case for responseStatus
+    const responseBody = httpResponse.data;
+
+    return responseBody;
   }
 
-  relayCreateAlert(dto: CreateAlertDto): GateResponseDto {
-    // TODO send alert request to alert service
-    return null;
+  async relayCreateAlert(dto: CreateAlertDto): Promise<GateResponseDto> {
+    const httpResponse = await lastValueFrom(
+      this.httpService.post('some_url_to_alerts', dto),
+    );
+    const responseBody = new GateResponseDto();
+    responseBody.status = 'success';
+    responseBody.message = 'success';
+
+    return responseBody;
   }
 }
